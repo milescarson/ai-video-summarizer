@@ -16,7 +16,7 @@ import {
   prUrlSchema,
   useReviewStore,
 } from "@/features/review";
-import { Github, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { ZodError } from "zod";
 
 function App() {
@@ -48,8 +48,12 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <div className="container max-w-5xl mx-auto py-12 px-4">
         <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Github className="h-10 w-10" />
+          <div className="flex flex-col items-center justify-center mb-4">
+            <img
+              src="/logo.png"
+              alt="PR Review AI Logo"
+              className="h-16 w-16 mb-3"
+            />
             <h1 className="text-4xl font-bold tracking-tight">PR Review AI</h1>
           </div>
           <p className="text-lg text-muted-foreground">
@@ -57,10 +61,6 @@ function App() {
           </p>
           <p className="text-sm text-muted-foreground mt-2">
             Paste a GitHub PR URL and get instant AI-powered code review
-          </p>
-          <p className="text-xs text-amber-600 mt-2 font-medium">
-            ℹ️ Note: Currently supports public PRs only. Private repository
-            support coming soon!
           </p>
         </div>
 
@@ -97,6 +97,11 @@ function App() {
                   )}
                 </Button>
               </div>
+
+              <p className="text-xs text-amber-600 font-medium">
+                ℹ️ Note: Currently supports public PRs only. Private repository
+                support coming soon!
+              </p>
 
               {error && (
                 <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-3">
