@@ -1,20 +1,19 @@
 import { z } from 'zod';
 
-export const prReviewRequestSchema = z.object({
-  prUrl: z
+export const videoSummaryRequestSchema = z.object({
+  videoUrl: z
     .string()
     .url('Invalid URL format')
     .regex(
-      /^https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/pull\/\d+$/,
-      'Invalid GitHub PR URL format. Expected: https://github.com/owner/repo/pull/123'
+      /^https:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)[\w-]+/,
+      'Invalid YouTube video URL format. Expected: https://www.youtube.com/watch?v=... or https://youtu.be/...'
     ),
 });
 
-export const prReviewResponseSchema = z.object({
+export const videoSummaryResponseSchema = z.object({
   summary: z.string(),
-  high_risk_issues: z.array(z.string()),
-  medium_risk_issues: z.array(z.string()),
-  low_risk_or_style_issues: z.array(z.string()),
-  suggestions: z.array(z.string()),
-  questions_for_author: z.array(z.string()),
+  main_points: z.array(z.string()),
+  key_insights: z.array(z.string()),
+  actionable_takeaways: z.array(z.string()),
+  notable_timestamps: z.array(z.string()),
 });

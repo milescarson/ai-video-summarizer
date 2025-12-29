@@ -1,6 +1,6 @@
 import OpenAI from 'openai';
 import { LlmProvider, SYSTEM_PROMPT, createUserPrompt } from './base';
-import type { PrReviewResponse } from '../../types';
+import type { VideoSummaryResponse } from '../../types';
 import { logger } from '../../utils';
 
 export class OpenAiProvider implements LlmProvider {
@@ -16,15 +16,18 @@ export class OpenAiProvider implements LlmProvider {
     return 'OpenAI';
   }
 
-  async reviewDiff(diff: string, prTitle: string): Promise<PrReviewResponse> {
+  async summarizeTranscript(
+    transcript: string,
+    videoTitle?: string
+  ): Promise<VideoSummaryResponse> {
     try {
-      logger.info(`Sending diff to OpenAI (${this.model}) for review`);
+      logger.info(`Sending transcript to OpenAI (${this.model}) for summarization`);
 
       const completion = await this.client.chat.completions.create({
         model: this.model,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: createUserPrompt(diff, prTitle) },
+          { role: 'user', content: createUserPrompt(transcript, videoTitle) },
         ],
         temperature: 0.3,
         response_format: { type: 'json_object' },
@@ -36,13 +39,13 @@ export class OpenAiProvider implements LlmProvider {
         throw new Error('No response from OpenAI');
       }
 
-      const parsed = JSON.parse(content) as PrReviewResponse;
+      const parsed = JSON.parse(content) as VideoSummaryResponse;
 
-      logger.info('Successfully received and parsed OpenAI review');
+      logger.info('Successfully received and parsed OpenAI summary');
 
       return this.normalizeResponse(parsed);
     } catch (error) {
-      logger.error('Failed to get OpenAI review', error);
+      logger.error('Failed to get OpenAI summary', error);
 
       if (error && typeof error === 'object' && 'message' in error) {
         const message = (error as { message: string }).message;
@@ -54,18 +57,17 @@ export class OpenAiProvider implements LlmProvider {
         }
       }
 
-      throw new Error('Failed to generate review using OpenAI');
+      throw new Error('Failed to generate summary using OpenAI');
     }
   }
 
-  private normalizeResponse(parsed: PrReviewResponse): PrReviewResponse {
+  private normalizeResponse(parsed: VideoSummaryResponse): VideoSummaryResponse {
     return {
       summary: parsed.summary || '',
-      high_risk_issues: parsed.high_risk_issues || [],
-      medium_risk_issues: parsed.medium_risk_issues || [],
-      low_risk_or_style_issues: parsed.low_risk_or_style_issues || [],
-      suggestions: parsed.suggestions || [],
-      questions_for_author: parsed.questions_for_author || [],
+      main_points: parsed.main_points || [],
+      key_insights: parsed.key_insights || [],
+      actionable_takeaways: parsed.actionable_takeaways || [],
+      notable_timestamps: parsed.notable_timestamps || [],
     };
   }
 }

@@ -1,4 +1,1 @@
-export {
-  prReviewRequestSchema as reviewRequestSchema,
-  prReviewResponseSchema as reviewResponseSchema,
-} from './review.schema';
+export { videoSummaryRequestSchema, videoSummaryResponseSchema } from './review.schema';

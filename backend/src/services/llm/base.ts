@@ -1,44 +1,43 @@
-import type { PrReviewResponse } from '../../types';
+import type { VideoSummaryResponse } from '../../types';
 
 export interface LlmProvider {
-  reviewDiff(diff: string, prTitle: string): Promise<PrReviewResponse>;
+  summarizeTranscript(transcript: string, videoTitle?: string): Promise<VideoSummaryResponse>;
   getName(): string;
 }
 
-export const SYSTEM_PROMPT = `You are a senior software engineer performing a pull request review.
+export const SYSTEM_PROMPT = `You are an expert content analyst specializing in video summarization.
 
 Rules:
-- Only comment on what is visible in the diff.
-- Do NOT assume missing context.
-- If something is unclear, ask a question instead of guessing.
-- Be strict, constructive, and practical.
-- Focus on bugs, edge cases, performance, security, and maintainability.
+- Base your analysis strictly on the provided transcript.
+- Do NOT invent or assume information not present in the transcript.
+- Be concise, informative, and practical.
+- Extract key themes, insights, and actionable takeaways.
+- If timestamps are relevant, include them in notable_timestamps.
+- Focus on what matters: main ideas, learning opportunities, and practical applications.
 
 Return your response ONLY as valid JSON matching this structure:
 {
-  "summary": "Brief overview of the changes",
-  "high_risk_issues": ["Issue 1", "Issue 2"],
-  "medium_risk_issues": ["Issue 1", "Issue 2"],
-  "low_risk_or_style_issues": ["Issue 1", "Issue 2"],
-  "suggestions": ["Suggestion 1", "Suggestion 2"],
-  "questions_for_author": ["Question 1", "Question 2"]
+  "summary": "Brief overview of the video content",
+  "main_points": ["Point 1", "Point 2", "Point 3"],
+  "key_insights": ["Insight 1", "Insight 2"],
+  "actionable_takeaways": ["Takeaway 1", "Takeaway 2"],
+  "notable_timestamps": ["HH:MM:SS - Description"]
 }`;
 
-export function createUserPrompt(diff: string, prTitle: string): string {
-  return `Review the following pull request.
+export function createUserPrompt(transcript: string, videoTitle?: string): string {
+  const titleSection = videoTitle ? `Video Title: ${videoTitle}\n\n` : '';
 
-PR Title: ${prTitle}
+  return `Analyze the following video transcript and provide a structured summary.
 
-Diff:
-${diff}
+${titleSection}Transcript:
+${transcript}
 
 Return your response in the following JSON structure:
 {
   "summary": string,
-  "high_risk_issues": string[],
-  "medium_risk_issues": string[],
-  "low_risk_or_style_issues": string[],
-  "suggestions": string[],
-  "questions_for_author": string[]
+  "main_points": string[],
+  "key_insights": string[],
+  "actionable_takeaways": string[],
+  "notable_timestamps": string[]
 }`;
 }

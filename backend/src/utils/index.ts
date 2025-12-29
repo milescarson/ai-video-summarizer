@@ -1,3 +1,2 @@
-export { parsePrUrl } from './parsePrUrl';
-export { chunkDiff } from './chunkDiff';
+export { chunkTranscript } from './chunkTranscript';
 export { logger } from './logger';

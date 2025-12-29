@@ -1,10 +1,13 @@
-import type { PrReviewResponse } from '../types';
+import type { VideoSummaryResponse } from '../types';
 import { llmProviderFactory } from './llm/factory';
 
 class LlmService {
-  async reviewDiff(diff: string, prTitle: string): Promise<PrReviewResponse> {
+  async summarizeTranscript(
+    transcript: string,
+    videoTitle?: string
+  ): Promise<VideoSummaryResponse> {
     const provider = llmProviderFactory.createProvider();
-    return provider.reviewDiff(diff, prTitle);
+    return provider.summarizeTranscript(transcript, videoTitle);
   }
 }
 

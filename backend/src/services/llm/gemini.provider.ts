@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { LlmProvider, SYSTEM_PROMPT, createUserPrompt } from './base';
-import type { PrReviewResponse } from '../../types';
+import type { VideoSummaryResponse } from '../../types';
 import { logger } from '../../utils';
 
 export class GeminiProvider implements LlmProvider {
@@ -16,9 +16,12 @@ export class GeminiProvider implements LlmProvider {
     return 'Gemini';
   }
 
-  async reviewDiff(diff: string, prTitle: string): Promise<PrReviewResponse> {
+  async summarizeTranscript(
+    transcript: string,
+    videoTitle?: string
+  ): Promise<VideoSummaryResponse> {
     try {
-      logger.info(`Sending diff to Gemini (${this.model}) for review`);
+      logger.info(`Sending transcript to Gemini (${this.model}) for summarization`);
 
       const model = this.client.getGenerativeModel({
         model: this.model,
@@ -28,7 +31,7 @@ export class GeminiProvider implements LlmProvider {
         },
       });
 
-      const prompt = `${SYSTEM_PROMPT}\n\n${createUserPrompt(diff, prTitle)}`;
+      const prompt = `${SYSTEM_PROMPT}\n\n${createUserPrompt(transcript, videoTitle)}`;
 
       const result = await model.generateContent(prompt);
       const response = result.response;
@@ -38,13 +41,13 @@ export class GeminiProvider implements LlmProvider {
         throw new Error('No response from Gemini');
       }
 
-      const parsed = JSON.parse(content) as PrReviewResponse;
+      const parsed = JSON.parse(content) as VideoSummaryResponse;
 
-      logger.info('Successfully received and parsed Gemini review');
+      logger.info('Successfully received and parsed Gemini summary');
 
       return this.normalizeResponse(parsed);
     } catch (error) {
-      logger.error('Failed to get Gemini review', error);
+      logger.error('Failed to get Gemini summary', error);
 
       if (error && typeof error === 'object' && 'message' in error) {
         const message = (error as { message: string }).message;
@@ -56,18 +59,17 @@ export class GeminiProvider implements LlmProvider {
         }
       }
 
-      throw new Error('Failed to generate review using Gemini');
+      throw new Error('Failed to generate summary using Gemini');
     }
   }
 
-  private normalizeResponse(parsed: PrReviewResponse): PrReviewResponse {
+  private normalizeResponse(parsed: VideoSummaryResponse): VideoSummaryResponse {
     return {
       summary: parsed.summary || '',
-      high_risk_issues: parsed.high_risk_issues || [],
-      medium_risk_issues: parsed.medium_risk_issues || [],
-      low_risk_or_style_issues: parsed.low_risk_or_style_issues || [],
-      suggestions: parsed.suggestions || [],
-      questions_for_author: parsed.questions_for_author || [],
+      main_points: parsed.main_points || [],
+      key_insights: parsed.key_insights || [],
+      actionable_takeaways: parsed.actionable_takeaways || [],
+      notable_timestamps: parsed.notable_timestamps || [],
     };
   }
 }

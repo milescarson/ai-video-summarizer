@@ -1,3 +1,3 @@
-export { githubService } from './github.service';
+export { youtubeService } from './youtube.service';
 export { llmService } from './llm.service';
-export { reviewService } from './review.service';
+export { summaryService } from './summary.service';

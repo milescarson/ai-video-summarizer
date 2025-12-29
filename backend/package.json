@@ -1,7 +1,7 @@
 {
-  "name": "pr-review-ai-backend",
+  "name": "ai-video-summarizer-backend",
   "version": "1.0.0",
-  "description": "LLM-powered GitHub PR review assistant backend",
+  "description": "LLM-powered YouTube video summarizer backend",
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
@@ -11,21 +11,21 @@
     "format": "prettier --write \"src/**/*.ts\""
   },
   "keywords": [
-    "pr-review",
-    "github",
+    "video-summarizer",
+    "youtube",
     "llm",
-    "openai"
+    "openai",
+    "transcript"
   ],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
-    "@octokit/rest": "^20.0.2",
-    "axios": "^1.6.5",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "openai": "^4.24.1",
+    "youtube-transcript-plus": "^1.1.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {

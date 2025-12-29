@@ -1,31 +1,17 @@
-export interface PrReviewRequest {
-  prUrl: string;
+export interface VideoSummaryRequest {
+  videoUrl: string;
 }
 
-export interface PrReviewResponse {
+export interface VideoSummaryResponse {
   summary: string;
-  high_risk_issues: string[];
-  medium_risk_issues: string[];
-  low_risk_or_style_issues: string[];
-  suggestions: string[];
-  questions_for_author: string[];
+  main_points: string[];
+  key_insights: string[];
+  actionable_takeaways: string[];
+  notable_timestamps: string[];
 }
 
-export interface PrMetadata {
-  owner: string;
-  repo: string;
-  pullNumber: number;
-  title: string;
-  author: string;
-  baseRef: string;
-  headRef: string;
-}
-
-export interface PrFile {
-  filename: string;
-  status: string;
-  additions: number;
-  deletions: number;
-  changes: number;
-  patch?: string;
+export interface TranscriptSegment {
+  text: string;
+  start: number;
+  duration: number;
 }

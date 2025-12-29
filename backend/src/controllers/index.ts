@@ -1,1 +1,1 @@
-export { reviewController } from './review.controller';
+export { summaryController } from './summary.controller';

@@ -9,30 +9,24 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogCancel,
 } from "@/components/ui";
-import { ReviewResult } from "@/components/review";
+import { SummaryResult } from "@/components/summary";
 import {
-  reviewPullRequest,
-  prUrlSchema,
-  useReviewStore,
-} from "@/features/review";
-import { Loader2, PlayCircle, X } from "lucide-react";
+  summarizeVideo,
+  videoUrlSchema,
+  useSummaryStore,
+} from "@/features/summary";
+import { Loader2, Video, Sparkles } from "lucide-react";
 import { ZodError } from "zod";
 
 function App() {
-  const { prUrl, setPrUrl } = useReviewStore();
+  const { videoUrl, setVideoUrl } = useSummaryStore();
   const [error, setError] = useState<string>("");
-  const [showDemo, setShowDemo] = useState<boolean>(false);
 
   const mutation = useMutation({
-    mutationFn: reviewPullRequest,
+    mutationFn: summarizeVideo,
     onError: (err: Error) => {
-      setError(err.message || "Failed to review PR");
+      setError(err.message || "Failed to summarize video");
     },
   });
 
@@ -41,120 +35,112 @@ function App() {
     setError("");
 
     try {
-      prUrlSchema.parse(prUrl);
-      mutation.mutate({ prUrl });
+      videoUrlSchema.parse(videoUrl);
+      mutation.mutate({ videoUrl });
     } catch (err) {
       if (err instanceof ZodError) {
-        setError(err.errors[0]?.message || "Invalid PR URL");
+        setError(err.errors[0]?.message || "Invalid video URL");
       }
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <div className="container max-w-5xl mx-auto py-12 px-4">
-        <div className="text-center mb-12">
-          <div className="flex flex-col items-center justify-center mb-4">
-            <img
-              src="/logo.png"
-              alt="PR Review AI Logo"
-              className="h-16 w-16 mb-3"
-            />
-            <h1 className="text-4xl font-bold tracking-tight">PR Review AI</h1>
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      {/* Animated background gradient */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(239,68,68,0.1),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(239,68,68,0.08),transparent_40%)]" />
+
+      <div className="relative container max-w-6xl mx-auto py-16 px-4">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="flex flex-col items-center justify-center mb-6">
+            <div className="relative group mb-6">
+              <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-3xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity" />
+              <div className="relative h-20 w-20 flex items-center justify-center bg-gradient-to-br from-red-500 to-red-600 rounded-3xl shadow-2xl">
+                <Video className="h-12 w-12 text-white" />
+              </div>
+            </div>
+            <h1 className="text-6xl font-bold tracking-tight bg-gradient-to-r from-white via-white to-slate-400 bg-clip-text text-transparent mb-4">
+              AI Video Summarizer
+            </h1>
+            <div className="flex items-center gap-2 text-slate-400">
+              <Sparkles className="h-4 w-4" />
+              <p className="text-lg">LLM-Powered YouTube Analysis</p>
+            </div>
           </div>
-          <p className="text-lg text-muted-foreground">
-            LLM-Powered GitHub Pull Request Review Assistant
+          <p className="text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            Transform any YouTube video into actionable insights. Get AI-powered
+            summaries, key takeaways, and timestamps in seconds.
           </p>
-          <p className="text-sm text-muted-foreground mt-2">
-            Paste a GitHub PR URL and get instant AI-powered code review
-          </p>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowDemo(true)}
-            className="mt-4"
-          >
-            <PlayCircle className="mr-2 h-4 w-4" />
-            Watch Demo
-          </Button>
         </div>
 
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Submit Pull Request</CardTitle>
-            <CardDescription>
-              Enter a public GitHub pull request URL to get started
+        {/* Input Card */}
+        <Card className="mb-8 glass-effect border-slate-800/50 shadow-2xl">
+          <CardHeader className="border-b border-slate-800/50">
+            <CardTitle className="text-2xl">Analyze Video</CardTitle>
+            <CardDescription className="text-slate-400">
+              Paste any YouTube URL to extract insights with AI
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="flex flex-col sm:flex-row gap-3">
                 <Input
                   type="text"
-                  placeholder="https://github.com/owner/repo/pull/123"
-                  value={prUrl}
-                  onChange={(e) => setPrUrl(e.target.value)}
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  value={videoUrl}
+                  onChange={(e) => setVideoUrl(e.target.value)}
                   disabled={mutation.isPending}
-                  className="flex-1"
+                  className="flex-1 h-12 bg-slate-900/50 border-slate-700/50 focus:border-red-500/50 focus:ring-red-500/20"
                 />
                 <Button
                   type="submit"
-                  disabled={mutation.isPending || !prUrl}
-                  className="sm:w-32"
+                  disabled={mutation.isPending || !videoUrl}
+                  className="sm:w-40 h-12 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-medium shadow-lg shadow-red-500/20 hover:shadow-red-500/30 transition-all"
                 >
                   {mutation.isPending ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Reviewing
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Analyzing
                     </>
                   ) : (
-                    "Review PR"
+                    <>
+                      <Sparkles className="mr-2 h-5 w-5" />
+                      Summarize
+                    </>
                   )}
                 </Button>
               </div>
 
-              <p className="text-xs text-amber-600 font-medium">
-                ℹ️ Note: Currently supports public PRs only. Private repository
-                support coming soon!
-              </p>
-
               {error && (
-                <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-3">
-                  {error}
+                <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg p-4 backdrop-blur-sm">
+                  <div className="flex items-start gap-2">
+                    <span className="text-red-400 mt-0.5">⚠</span>
+                    <span>{error}</span>
+                  </div>
                 </div>
               )}
 
               {mutation.isPending && (
-                <div className="text-sm text-blue-600 bg-blue-50 border border-blue-200 rounded-md p-3">
-                  Analyzing pull request... This may take 10-30 seconds.
+                <div className="text-sm text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 backdrop-blur-sm">
+                  <div className="flex items-start gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin mt-0.5" />
+                    <span>
+                      Fetching transcript and analyzing video... This may take
+                      15-30 seconds.
+                    </span>
+                  </div>
                 </div>
               )}
             </form>
           </CardContent>
         </Card>
 
+        {/* Results */}
         {mutation.isSuccess && mutation.data && (
-          <ReviewResult review={mutation.data} />
+          <SummaryResult summary={mutation.data} />
         )}
       </div>
-
-      <AlertDialog open={showDemo} onOpenChange={setShowDemo}>
-        <AlertDialogContent className="max-w-4xl">
-          <AlertDialogHeader>
-            <AlertDialogTitle>PR Review AI Demo</AlertDialogTitle>
-            <AlertDialogCancel className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-              <X className="h-4 w-4" />
-              <span className="sr-only">Close</span>
-            </AlertDialogCancel>
-          </AlertDialogHeader>
-          <div className="aspect-video rounded-lg overflow-hidden bg-slate-900">
-            <video className="w-full h-full object-contain" controls autoPlay>
-              <source src="/demo.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }

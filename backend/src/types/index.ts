@@ -1,1 +1,1 @@
-export type { PrReviewResponse, PrFile, PrMetadata } from './review';
+export type { VideoSummaryResponse, VideoSummaryRequest, TranscriptSegment } from './review';

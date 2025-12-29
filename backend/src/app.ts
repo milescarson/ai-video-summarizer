@@ -1,6 +1,6 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import reviewRouter from './routes/review.route';
+import summaryRouter from './routes/summary.route';
 import { logger } from './utils';
 import { ZodError } from 'zod';
 
@@ -19,7 +19,7 @@ export function createApp(): Application {
     res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
   });
 
-  app.use('/api', reviewRouter);
+  app.use('/api', summaryRouter);
 
   app.use((error: Error, _req: Request, res: Response, _next: NextFunction) => {
     logger.error('Error handler caught:', error);
